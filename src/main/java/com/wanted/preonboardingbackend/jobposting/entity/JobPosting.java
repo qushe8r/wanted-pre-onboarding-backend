@@ -6,10 +6,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
 @Builder
+@Setter(AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class JobPosting {
@@ -33,5 +35,12 @@ public class JobPosting {
     @Builder.Default
     @OneToMany(mappedBy = "jobPosting", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Apply> applies = new ArrayList<>();
+
+    public void update(String position, Long hiringBonus, String content, String skill) {
+        Optional.ofNullable(position).ifPresent(this::setPosition);
+        Optional.ofNullable(hiringBonus).ifPresent(this::setHiringBonus);
+        Optional.ofNullable(content).ifPresent(this::setContent);
+        Optional.ofNullable(skill).ifPresent(this::setSkill);
+    }
 
 }

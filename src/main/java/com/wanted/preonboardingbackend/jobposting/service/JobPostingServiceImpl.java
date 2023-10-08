@@ -36,7 +36,11 @@ public class JobPostingServiceImpl implements JobPostingService {
 
     @Override
     public JobPostingResponse update(Long jobPostingId, JobPostingPatch patch) {
-        return null;
+        JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
+                .orElseThrow(RuntimeException::new);
+
+        jobPosting.update(patch.getPosition(), patch.getHiringBonus(), patch.getContent(), patch.getSkill());
+        return jobPostingMapper.toResponse(jobPosting);
     }
 
 }

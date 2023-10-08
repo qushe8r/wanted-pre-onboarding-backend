@@ -1,6 +1,7 @@
 package com.wanted.preonboardingbackend.jobposting.service;
 
 import com.wanted.preonboardingbackend.company.entity.Company;
+import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
 import com.wanted.preonboardingbackend.jobposting.entity.JobPosting;
@@ -15,9 +16,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -136,12 +140,83 @@ class JobPostingServiceTest {
         assertThat(response.getContent()).isEqualTo(content);
     }
 
+    @DisplayName("update: 정상 작동")
+    @Test
+    void update() {
+        // given
+        Long jobPostingId = 1L;
+
+        String patchPosition = "백엔드 주니어 개발자";
+        Long patchHiringBonus = 1000000L;
+        String patchSkill = "Python";
+        String patchContent = "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은...";
+
+        JobPostingPatch patch = buildJobPostingPatch(patchPosition, patchHiringBonus, patchSkill, patchContent);
+
+        Long companyId = 1L;
+        String name = "원티드랩";
+        String country = "대한민국";
+        String city = "서울";
+
+        Company company = buildCompany(companyId, name, country, city);
+
+        String position = "백엔드 시니어 개발자";
+        Long hiringBonus = 3000000L;
+        String skill = "Java";
+        String content = "원티드랩에서 백엔드 시니어 개발자를 채용합니다. 자격요건은 ...";
+
+
+        JobPosting jobPosting = buildJobPosting(jobPostingId, company, position, hiringBonus, skill, content);
+
+        when(jobPostingRepository.findById(anyLong())).thenReturn(Optional.of(jobPosting));
+
+        // when
+        JobPostingResponse response = jobPostingService.update(jobPostingId, patch);
+
+        // then
+        assertThat(response.getJobPostingId()).isEqualTo(jobPostingId);
+        assertThat(response.getCompanyName()).isEqualTo(name);
+        assertThat(response.getCountry()).isEqualTo(country);
+        assertThat(response.getCity()).isEqualTo(city);
+        assertThat(response.getPosition()).isEqualTo(patchPosition);
+        assertThat(response.getHiringBonus()).isEqualTo(patchHiringBonus);
+        assertThat(response.getSkill()).isEqualTo(patchSkill);
+        assertThat(response.getContent()).isEqualTo(patchContent);
+    }
+
+    @DisplayName("update: jobPostingRepository.findById() 가 Optional.ofNullable(null)을 리턴")
+    @Test
+    void update_repositoryReturnOfNullable() {
+        // given
+        Long jobPostingId = 1L;
+
+        String position = "백엔드 주니어 개발자";
+        Long hiringBonus = 1000000L;
+        String skill = "Python";
+        String content = "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은...";
+
+        JobPostingPatch patch = buildJobPostingPatch(position, hiringBonus, skill, content);
+
+        JobPosting jobPosting = null;
+
+        when(jobPostingRepository.findById(anyLong())).thenReturn(Optional.ofNullable(jobPosting));
+
+        // when & then
+        assertThatThrownBy(() -> jobPostingService.update(jobPostingId, patch))
+                .isInstanceOf(RuntimeException.class);
+
+    }
+
     private Company buildCompany(Long companyId, String name, String country, String city) {
         return Company.builder().id(companyId).name(name).country(country).city(city).build();
     }
 
     private JobPosting buildJobPosting(Long jobPostingId, Company company, String position, Long hiringBonus, String skill, String content) {
         return JobPosting.builder().id(jobPostingId).company(company).position(position).hiringBonus(hiringBonus).skill(skill).content(content).build();
+    }
+
+    private JobPostingPatch buildJobPostingPatch(String position, Long hiringBonus, String skill, String content) {
+        return JobPostingPatch.builder().position(position).hiringBonus(hiringBonus).skill(skill).content(content).build();
     }
 
     private JobPostingPost buildJobPostingPost(Long companyId, String position, Long hiringBonus, String skill, String content) {
