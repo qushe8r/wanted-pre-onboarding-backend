@@ -14,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -58,7 +60,80 @@ class JobPostingServiceTest {
         assertThat(response.getHiringBonus()).isEqualTo(hiringBonus);
         assertThat(response.getSkill()).isEqualTo(skill);
         assertThat(response.getContent()).isEqualTo(content);
+    }
 
+    @DisplayName("getPosts: searchCond가 null이어도 정상 작동함")
+    @Test
+    void getPosts_searchCondEqNull() {
+        // given
+        Long companyId = 1L;
+        String name = "원티드랩";
+        String country = "대한민국";
+        String city = "서울";
+
+        Company company = buildCompany(companyId, name, country, city);
+
+        Long jobPostingId = 1L;
+        String position = "백엔드 주니어 개발자";
+        Long hiringBonus = 1000000L;
+        String skill = "Python";
+        String content = "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은...";
+
+        JobPosting jobPosting = buildJobPosting(jobPostingId, company, position, hiringBonus, skill, content);
+
+        String searchCond = null;
+        when(jobPostingRepository.search(searchCond)).thenReturn(List.of(jobPosting));
+
+        // when
+        List<JobPostingResponse> responses = jobPostingService.getPosts(searchCond);
+        JobPostingResponse response = responses.get(0);
+
+        // then
+        assertThat(response.getJobPostingId()).isEqualTo(jobPostingId);
+        assertThat(response.getCompanyName()).isEqualTo(name);
+        assertThat(response.getCountry()).isEqualTo(country);
+        assertThat(response.getCity()).isEqualTo(city);
+        assertThat(response.getPosition()).isEqualTo(position);
+        assertThat(response.getHiringBonus()).isEqualTo(hiringBonus);
+        assertThat(response.getSkill()).isEqualTo(skill);
+        assertThat(response.getContent()).isEqualTo(content);
+    }
+
+    @DisplayName("getPosts: searchCond가 null이어도 정상 작동함")
+    @Test
+    void getPosts_searchCondNotNull() {
+        // given
+        Long companyId = 1L;
+        String name = "원티드랩";
+        String country = "대한민국";
+        String city = "서울";
+
+        Company company = buildCompany(companyId, name, country, city);
+
+        Long jobPostingId = 1L;
+        String position = "백엔드 주니어 개발자";
+        Long hiringBonus = 1000000L;
+        String skill = "Python";
+        String content = "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은...";
+
+        JobPosting jobPosting = buildJobPosting(jobPostingId, company, position, hiringBonus, skill, content);
+
+        String searchCond = name;
+        when(jobPostingRepository.search(searchCond)).thenReturn(List.of(jobPosting));
+
+        // when
+        List<JobPostingResponse> responses = jobPostingService.getPosts(searchCond);
+        JobPostingResponse response = responses.get(0);
+
+        // then
+        assertThat(response.getJobPostingId()).isEqualTo(jobPostingId);
+        assertThat(response.getCompanyName()).isEqualTo(name);
+        assertThat(response.getCountry()).isEqualTo(country);
+        assertThat(response.getCity()).isEqualTo(city);
+        assertThat(response.getPosition()).isEqualTo(position);
+        assertThat(response.getHiringBonus()).isEqualTo(hiringBonus);
+        assertThat(response.getSkill()).isEqualTo(skill);
+        assertThat(response.getContent()).isEqualTo(content);
     }
 
     private Company buildCompany(Long companyId, String name, String country, String city) {
