@@ -46,7 +46,8 @@ public class JobPostingServiceImpl implements JobPostingService {
 
     @Override
     public JobPostingDetailResponse getPost(Long jobPostingId) {
-        return null;
+        JobPosting jobPosting = jobPostingRepository.getPost(jobPostingId).orElseThrow(RuntimeException::new);
+        return jobPostingMapper.toDetailResponse(jobPosting);
     }
 
 }

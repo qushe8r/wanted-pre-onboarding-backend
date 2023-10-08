@@ -1,6 +1,7 @@
 package com.wanted.preonboardingbackend.jobposting.service;
 
 import com.wanted.preonboardingbackend.company.entity.Company;
+import com.wanted.preonboardingbackend.jobposting.dto.JobPostingDetailResponse;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
@@ -205,6 +206,45 @@ class JobPostingServiceTest {
         assertThatThrownBy(() -> jobPostingService.update(jobPostingId, patch))
                 .isInstanceOf(RuntimeException.class);
 
+    }
+
+    @DisplayName("getPost: 정상 작동")
+    @Test
+    void getPost() {
+        // given
+        Long jobPostingId = 1L;
+
+        Long companyId = 1L;
+        String name = "원티드랩";
+        String country = "대한민국";
+        String city = "서울";
+
+        Company company = buildCompany(companyId, name, country, city);
+
+        String position = "백엔드 주니어 개발자";
+        Long hiringBonus = 1000000L;
+        String skill = "Python";
+        String content = "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은...";
+
+
+        JobPosting jobPosting = buildJobPosting(jobPostingId, company, position, hiringBonus, skill, content);
+
+        company.getJobPostings().add(jobPosting);
+
+        when(jobPostingRepository.getPost(jobPostingId)).thenReturn(Optional.of(jobPosting));
+
+        // when
+        JobPostingDetailResponse response = jobPostingService.getPost(jobPostingId);
+
+        //then
+        assertThat(response.getJobPostingId()).isEqualTo(jobPostingId);
+        assertThat(response.getCompanyName()).isEqualTo(name);
+        assertThat(response.getCountry()).isEqualTo(country);
+        assertThat(response.getPosition()).isEqualTo(position);
+        assertThat(response.getHiringBonus()).isEqualTo(hiringBonus);
+        assertThat(response.getContent()).isEqualTo(content);
+        assertThat(response.getSkill()).isEqualTo(skill);
+        assertThat(response.getJobPostings().get(0)).isEqualTo(jobPostingId);
     }
 
     private Company buildCompany(Long companyId, String name, String country, String city) {
