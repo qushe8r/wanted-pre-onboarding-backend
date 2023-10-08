@@ -17,4 +17,6 @@ public interface JobPostingService {
 
     JobPostingDetailResponse getPost(Long jobPostingId);
 
+    void remove(Long jobPostingId);
+
 }

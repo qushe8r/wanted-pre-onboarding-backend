@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -149,6 +150,22 @@ class JobPostingControllerTest {
         actions
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void remove() throws Exception {
+        // given
+        Long jobPostingId = 1L;
+
+        doNothing().when(jobPostingService).remove(anyLong());
+
+        // when
+        ResultActions actions = mockMvc.perform(delete(JOB_POSTING_URI + JOB_POSTING_ID, jobPostingId));
+
+        // then
+        actions
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
     private JobPostingPost buildJobPostingPost(Long companyId, String position, Long hiringBonus, String skill, String content) {

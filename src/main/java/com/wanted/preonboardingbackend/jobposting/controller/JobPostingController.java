@@ -48,4 +48,10 @@ public class JobPostingController {
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/{jobPostingId}")
+    public ResponseEntity<Void> remove(@PathVariable Long jobPostingId) {
+        jobPostingService.remove(jobPostingId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

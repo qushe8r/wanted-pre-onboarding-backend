@@ -50,4 +50,9 @@ public class JobPostingServiceImpl implements JobPostingService {
         return jobPostingMapper.toDetailResponse(jobPosting);
     }
 
+    @Override
+    public void remove(Long jobPostingId) {
+
+    }
+
 }
