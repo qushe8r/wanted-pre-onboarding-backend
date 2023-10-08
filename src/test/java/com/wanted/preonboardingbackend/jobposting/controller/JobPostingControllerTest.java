@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
 import com.wanted.preonboardingbackend.jobposting.service.JobPostingService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,8 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -60,6 +65,33 @@ class JobPostingControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
 
+    }
+
+    @DisplayName("GET: /job-postings?search=Python")
+    @Test
+    void getPosts() throws Exception {
+        // given
+        Long jobPostingId = 1L;
+        String name = "원티드랩";
+        String country = "대한민국";
+        String city = "서울";
+        String position = "백엔드 주니어 개발자";
+        Long hiringBonus = 1L;
+        String content = "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은...";
+        String skill = "Python";
+
+        JobPostingResponse jobPostingResponse = buildJobPostingResponse(jobPostingId, name, country, city, position, hiringBonus, content, skill);
+        when(jobPostingService.getPosts(anyString())).thenReturn(List.of(jobPostingResponse));
+
+        // when
+        ResultActions actions = mockMvc.perform(get(JOB_POSTING_URI)
+                .param("search", "Python")
+                .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        actions
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     private JobPostingPost buildJobPostingPost(Long companyId, String position, Long hiringBonus, String skill, String content) {

@@ -6,12 +6,10 @@ import com.wanted.preonboardingbackend.jobposting.service.ApplyService;
 import com.wanted.preonboardingbackend.jobposting.service.JobPostingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,6 +25,12 @@ public class JobPostingController {
         JobPostingResponse response = jobPostingService.save(post);
         URI uri = URI.create(JOB_POSTING_URI);
         return ResponseEntity.created(uri).body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<JobPostingResponse>> getPosts(@RequestParam(required = false) String search) {
+        List<JobPostingResponse> responses = jobPostingService.getPosts(search);
+        return ResponseEntity.ok(responses);
     }
 
 }

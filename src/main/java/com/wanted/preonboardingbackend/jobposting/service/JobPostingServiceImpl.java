@@ -8,6 +8,8 @@ import com.wanted.preonboardingbackend.jobposting.repositroy.JobPostingRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class JobPostingServiceImpl implements JobPostingService {
@@ -21,6 +23,11 @@ public class JobPostingServiceImpl implements JobPostingService {
         JobPosting jobPosting = jobPostingMapper.toEntity(post);
         JobPosting saved = jobPostingRepository.save(jobPosting);
         return jobPostingMapper.toResponse(saved);
+    }
+
+    @Override
+    public List<JobPostingResponse> getPosts(String searchCond) {
+        return null;
     }
 
 }
