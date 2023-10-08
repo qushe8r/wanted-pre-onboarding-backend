@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +28,9 @@ public class JobPostingServiceImpl implements JobPostingService {
 
     @Override
     public List<JobPostingResponse> getPosts(String searchCond) {
-        return null;
+        List<JobPosting> all = jobPostingRepository.search(searchCond);
+        return all.stream().map(jobPostingMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
 }
