@@ -1,10 +1,8 @@
 package com.wanted.preonboardingbackend.jobposting.controller;
 
 import com.google.gson.Gson;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingDetailResponse;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
+import com.wanted.preonboardingbackend.jobposting.dto.*;
+import com.wanted.preonboardingbackend.jobposting.service.ApplyService;
 import com.wanted.preonboardingbackend.jobposting.service.JobPostingService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,11 +31,16 @@ class JobPostingControllerTest {
     @MockBean
     JobPostingService jobPostingService;
 
+    @MockBean
+    ApplyService applyService;
+
     Gson gson = new Gson();
 
     static final String JOB_POSTING_URI = "/job-postings";
 
     static final String JOB_POSTING_ID = "/{jobPostingId}";
+
+    static final String APPLY = "/apply";
 
     @DisplayName("POST: /job-postings")
     @Test
@@ -152,6 +155,7 @@ class JobPostingControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @DisplayName("DELETE: /job-postings/{jobPostingId")
     @Test
     void remove() throws Exception {
         // given
@@ -168,6 +172,33 @@ class JobPostingControllerTest {
                 .andExpect(status().isNoContent());
     }
 
+    @DisplayName("POST: /job-postings/{jobPostingId}/apply")
+    @Test
+    void summit() throws Exception {
+        // given
+        Long jobPostingId = 1L;
+        Long userId = 1L;
+        Long applyId = 1L;
+
+        ApplyPost applyPost = buildApply(userId);
+        String post = gson.toJson(applyPost);
+
+        ApplyResponse applyResponse = ApplyResponse.builder().applyId(applyId).userId(userId).jobPostingId(jobPostingId).build();
+
+        when(applyService.save(anyLong(), any(ApplyPost.class))).thenReturn(applyResponse);
+
+        // when
+        ResultActions actions = mockMvc.perform(post(JOB_POSTING_URI + JOB_POSTING_ID + APPLY, jobPostingId)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(post));
+
+        // then
+        actions
+                .andDo(print())
+                .andExpect(status().isCreated());
+    }
+
     private JobPostingPost buildJobPostingPost(Long companyId, String position, Long hiringBonus, String skill, String content) {
         return JobPostingPost.builder().companyId(companyId).position(position).hiringBonus(hiringBonus).skill(skill).content(content).build();
     }
@@ -182,6 +213,10 @@ class JobPostingControllerTest {
 
     private JobPostingDetailResponse buildJobPostingDetailResponse(Long jobPostingId, String name, String country, String city, String position, Long hiringBonus, String content, String skill) {
         return JobPostingDetailResponse.builder().jobPostingId(jobPostingId).companyName(name).country(country).city(city).position(position).hiringBonus(hiringBonus).content(content).skill(skill).jobPostings(List.of(1L)).build();
+    }
+
+    private ApplyPost buildApply(Long userId) {
+        return ApplyPost.builder().userId(userId).build();
     }
 
 }

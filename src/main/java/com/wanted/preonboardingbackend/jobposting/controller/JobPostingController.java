@@ -1,9 +1,6 @@
 package com.wanted.preonboardingbackend.jobposting.controller;
 
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingDetailResponse;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
+import com.wanted.preonboardingbackend.jobposting.dto.*;
 import com.wanted.preonboardingbackend.jobposting.service.ApplyService;
 import com.wanted.preonboardingbackend.jobposting.service.JobPostingService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +16,8 @@ import java.util.List;
 public class JobPostingController {
 
     private final JobPostingService jobPostingService;
+
+    private final ApplyService applyService;
 
     private static final String JOB_POSTING_URI = "/job-postings";
 
@@ -52,6 +51,14 @@ public class JobPostingController {
     public ResponseEntity<Void> remove(@PathVariable Long jobPostingId) {
         jobPostingService.remove(jobPostingId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{jobPostingId}/apply")
+    public ResponseEntity<ApplyResponse> summit(@PathVariable Long jobPostingId,
+                                                @RequestBody ApplyPost post) {
+        ApplyResponse response = applyService.save(jobPostingId, post);
+        URI uri = URI.create(JOB_POSTING_URI + response.getJobPostingId() + "/apply" + response.getApplyId());
+        return ResponseEntity.created(uri).body(response);
     }
 
 }
