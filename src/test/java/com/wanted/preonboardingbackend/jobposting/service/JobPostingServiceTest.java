@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @ExtendWith(SpringExtension.class)
@@ -245,6 +245,32 @@ class JobPostingServiceTest {
         assertThat(response.getContent()).isEqualTo(content);
         assertThat(response.getSkill()).isEqualTo(skill);
         assertThat(response.getJobPostings().get(0)).isEqualTo(jobPostingId);
+    }
+
+    @DisplayName("remove: 정상 작동")
+    @Test
+    void remove() {
+        // given
+        Long companyId = 1L;
+        Long jobPostingId = 1L;
+
+        Company company = buildCompany(companyId, null, null, null);
+
+        String position = "백엔드 주니어 개발자";
+        Long hiringBonus = 1000000L;
+        String skill = "Python";
+        String content = "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은...";
+
+        JobPosting jobPosting = buildJobPosting(jobPostingId, company, position, hiringBonus, skill, content);
+
+        when(jobPostingRepository.findById(anyLong())).thenReturn(Optional.of(jobPosting));
+        doNothing().when(jobPostingRepository).delete(any(JobPosting.class));
+
+        // when
+        jobPostingService.remove(jobPostingId);
+
+        verify(jobPostingRepository, times(1)).findById(anyLong());
+        verify(jobPostingRepository, times(1)).delete(any(JobPosting.class));
     }
 
     private Company buildCompany(Long companyId, String name, String country, String city) {

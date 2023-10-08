@@ -52,7 +52,8 @@ public class JobPostingServiceImpl implements JobPostingService {
 
     @Override
     public void remove(Long jobPostingId) {
-
+        jobPostingRepository.findById(jobPostingId)
+                .ifPresent(jobPostingRepository::delete);
     }
 
 }
