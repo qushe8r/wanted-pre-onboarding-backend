@@ -1,5 +1,6 @@
 package com.wanted.preonboardingbackend.jobposting.controller;
 
+import com.wanted.preonboardingbackend.jobposting.dto.JobPostingDetailResponse;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
@@ -38,7 +39,12 @@ public class JobPostingController {
     public ResponseEntity<JobPostingResponse> modify(@PathVariable Long jobPostingId,
                                                      @RequestBody JobPostingPatch patch) {
         JobPostingResponse response = jobPostingService.update(jobPostingId, patch);
+        return ResponseEntity.ok(response);
+    }
 
+    @GetMapping("/{jobPostingId}")
+    public ResponseEntity<JobPostingDetailResponse> getPost(@PathVariable Long jobPostingId) {
+        JobPostingDetailResponse response = jobPostingService.getPost(jobPostingId);
         return ResponseEntity.ok(response);
     }
 

@@ -1,5 +1,6 @@
 package com.wanted.preonboardingbackend.jobposting.service;
 
+import com.wanted.preonboardingbackend.jobposting.dto.JobPostingDetailResponse;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
@@ -41,6 +42,11 @@ public class JobPostingServiceImpl implements JobPostingService {
 
         jobPosting.update(patch.getPosition(), patch.getHiringBonus(), patch.getContent(), patch.getSkill());
         return jobPostingMapper.toResponse(jobPosting);
+    }
+
+    @Override
+    public JobPostingDetailResponse getPost(Long jobPostingId) {
+        return null;
     }
 
 }

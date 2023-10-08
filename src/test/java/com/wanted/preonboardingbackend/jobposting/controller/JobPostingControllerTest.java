@@ -1,6 +1,7 @@
 package com.wanted.preonboardingbackend.jobposting.controller;
 
 import com.google.gson.Gson;
+import com.wanted.preonboardingbackend.jobposting.dto.JobPostingDetailResponse;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
@@ -37,6 +38,7 @@ class JobPostingControllerTest {
 
     static final String JOB_POSTING_ID = "/{jobPostingId}";
 
+    @DisplayName("POST: /job-postings")
     @Test
     void write() throws Exception {
         // given
@@ -123,6 +125,32 @@ class JobPostingControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @DisplayName("GET: /job-postings/{jobPostingId}")
+    @Test
+    void getPost() throws Exception {
+        // given
+        Long jobPostingId = 1L;
+        String name = "원티드랩";
+        String country = "대한민국";
+        String city = "서울";
+        String position = "백엔드 주니어 개발자";
+        Long hiringBonus = 1L;
+        String content = "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은...";
+        String skill = "Python";
+
+        JobPostingDetailResponse jobPostingDetailResponse = buildJobPostingDetailResponse(jobPostingId, name, country, city, position, hiringBonus, content, skill);
+        when(jobPostingService.getPost(anyLong())).thenReturn(jobPostingDetailResponse);
+
+        // when
+        ResultActions actions = mockMvc.perform(get(JOB_POSTING_URI + JOB_POSTING_ID, jobPostingId)
+                .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        actions
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
     private JobPostingPost buildJobPostingPost(Long companyId, String position, Long hiringBonus, String skill, String content) {
         return JobPostingPost.builder().companyId(companyId).position(position).hiringBonus(hiringBonus).skill(skill).content(content).build();
     }
@@ -133,6 +161,10 @@ class JobPostingControllerTest {
 
     private JobPostingResponse buildJobPostingResponse(Long jobPostingId, String companyName, String country, String city, String position, Long hiringBonus, String content, String skill) {
         return JobPostingResponse.builder().jobPostingId(jobPostingId).companyName(companyName).country(country).city(city).position(position).hiringBonus(hiringBonus).content(content).skill(skill).build();
+    }
+
+    private JobPostingDetailResponse buildJobPostingDetailResponse(Long jobPostingId, String name, String country, String city, String position, Long hiringBonus, String content, String skill) {
+        return JobPostingDetailResponse.builder().jobPostingId(jobPostingId).companyName(name).country(country).city(city).position(position).hiringBonus(hiringBonus).content(content).skill(skill).jobPostings(List.of(1L)).build();
     }
 
 }
