@@ -1,5 +1,6 @@
 package com.wanted.preonboardingbackend.jobposting.controller;
 
+import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
 import com.wanted.preonboardingbackend.jobposting.service.ApplyService;
@@ -31,6 +32,14 @@ public class JobPostingController {
     public ResponseEntity<List<JobPostingResponse>> getPosts(@RequestParam(required = false) String search) {
         List<JobPostingResponse> responses = jobPostingService.getPosts(search);
         return ResponseEntity.ok(responses);
+    }
+
+    @PatchMapping("/{jobPostingId}")
+    public ResponseEntity<JobPostingResponse> modify(@PathVariable Long jobPostingId,
+                                                     @RequestBody JobPostingPatch patch) {
+        JobPostingResponse response = jobPostingService.update(jobPostingId, patch);
+
+        return ResponseEntity.ok(response);
     }
 
 }

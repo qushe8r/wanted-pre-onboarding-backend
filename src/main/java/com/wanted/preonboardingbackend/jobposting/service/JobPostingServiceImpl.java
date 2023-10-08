@@ -1,5 +1,6 @@
 package com.wanted.preonboardingbackend.jobposting.service;
 
+import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
 import com.wanted.preonboardingbackend.jobposting.entity.JobPosting;
@@ -31,6 +32,11 @@ public class JobPostingServiceImpl implements JobPostingService {
         List<JobPosting> all = jobPostingRepository.search(searchCond);
         return all.stream().map(jobPostingMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public JobPostingResponse update(Long jobPostingId, JobPostingPatch patch) {
+        return null;
     }
 
 }
