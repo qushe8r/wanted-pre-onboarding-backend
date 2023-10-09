@@ -19,7 +19,7 @@ public class CompanyMapper {
     public CompanyResponse toResponse(Company company) {
         return CompanyResponse.builder()
                 .companyId(company.getId())
-                .companyName(company.getName())
+                .name(company.getName())
                 .country(company.getCountry())
                 .city(company.getCity())
                 .build();

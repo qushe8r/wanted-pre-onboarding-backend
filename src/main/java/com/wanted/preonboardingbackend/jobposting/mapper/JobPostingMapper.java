@@ -3,6 +3,7 @@ package com.wanted.preonboardingbackend.jobposting.mapper;
 import com.wanted.preonboardingbackend.company.entity.Company;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingDetailResponse;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
+import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPostResponse;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
 import com.wanted.preonboardingbackend.jobposting.entity.JobPosting;
 import org.springframework.stereotype.Component;
@@ -23,12 +24,18 @@ public class JobPostingMapper {
                 .build();
     }
 
+    public JobPostingPostResponse toPostResponse(JobPosting jobPosting) {
+        return JobPostingPostResponse.builder()
+                .jobPostingId(jobPosting.getId())
+                .position(jobPosting.getPosition())
+                .hiringBonus(jobPosting.getHiringBonus())
+                .content(jobPosting.getContent())
+                .skill(jobPosting.getSkill())
+                .build();
+    }
+
     public JobPostingResponse toResponse(JobPosting jobPosting) {
-        boolean isNull = jobPosting.getCompany() == null;
         return JobPostingResponse.builder()
-                .companyName(isNull ? null : jobPosting.getCompany().getName())
-                .country(isNull ? null : jobPosting.getCompany().getCountry())
-                .city(isNull ? null : jobPosting.getCompany().getCity())
                 .jobPostingId(jobPosting.getId())
                 .position(jobPosting.getPosition())
                 .hiringBonus(jobPosting.getHiringBonus())
@@ -40,7 +47,7 @@ public class JobPostingMapper {
     public JobPostingDetailResponse toDetailResponse(JobPosting jobPosting) {
         return JobPostingDetailResponse.builder()
                 .jobPostingId(jobPosting.getId())
-                .companyName(jobPosting.getCompany().getName())
+                .name(jobPosting.getCompany().getName())
                 .country(jobPosting.getCompany().getCountry())
                 .city(jobPosting.getCompany().getCity())
                 .position(jobPosting.getPosition())
