@@ -2,10 +2,7 @@ package com.wanted.preonboardingbackend.jobposting.service;
 
 import com.wanted.preonboardingbackend.exception.BusinessLogicException;
 import com.wanted.preonboardingbackend.exception.ExceptionCode;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingDetailResponse;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
+import com.wanted.preonboardingbackend.jobposting.dto.*;
 import com.wanted.preonboardingbackend.jobposting.entity.JobPosting;
 import com.wanted.preonboardingbackend.jobposting.mapper.JobPostingMapper;
 import com.wanted.preonboardingbackend.jobposting.repositroy.JobPostingRepository;
@@ -25,10 +22,10 @@ public class JobPostingServiceImpl implements JobPostingService {
     private final JobPostingMapper jobPostingMapper;
 
     @Override
-    public JobPostingResponse save(JobPostingPost post) {
+    public JobPostingPostResponse save(JobPostingPost post) {
         JobPosting jobPosting = jobPostingMapper.toEntity(post);
         JobPosting saved = jobPostingRepository.save(jobPosting);
-        return jobPostingMapper.toResponse(saved);
+        return jobPostingMapper.toPostResponse(saved);
     }
 
     @Override

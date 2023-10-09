@@ -1,10 +1,7 @@
 package com.wanted.preonboardingbackend.jobposting.service;
 
 import com.wanted.preonboardingbackend.company.entity.Company;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingDetailResponse;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
-import com.wanted.preonboardingbackend.jobposting.dto.JobPostingResponse;
+import com.wanted.preonboardingbackend.jobposting.dto.*;
 import com.wanted.preonboardingbackend.jobposting.entity.JobPosting;
 import com.wanted.preonboardingbackend.jobposting.mapper.JobPostingMapper;
 import com.wanted.preonboardingbackend.jobposting.repositroy.JobPostingRepository;
@@ -54,13 +51,13 @@ class JobPostingServiceTest {
         when(jobPostingRepository.save(any(JobPosting.class))).thenReturn(savedJobPosting);
 
         // when
-        JobPostingResponse response = jobPostingService.save(post);
+        JobPostingPostResponse response = jobPostingService.save(post);
 
         // then
         assertThat(response.getJobPostingId()).isEqualTo(jobPostingId);
-        assertThat(response.getCompanyName()).isNull();
-        assertThat(response.getCountry()).isNull();
-        assertThat(response.getCity()).isNull();
+//        assertThat(response.getName()).isNull();
+//        assertThat(response.getCountry()).isNull();
+//        assertThat(response.getCity()).isNull();
         assertThat(response.getPosition()).isEqualTo(position);
         assertThat(response.getHiringBonus()).isEqualTo(hiringBonus);
         assertThat(response.getSkill()).isEqualTo(skill);
@@ -95,7 +92,7 @@ class JobPostingServiceTest {
 
         // then
         assertThat(response.getJobPostingId()).isEqualTo(jobPostingId);
-        assertThat(response.getCompanyName()).isEqualTo(name);
+        assertThat(response.getName()).isEqualTo(name);
         assertThat(response.getCountry()).isEqualTo(country);
         assertThat(response.getCity()).isEqualTo(city);
         assertThat(response.getPosition()).isEqualTo(position);
@@ -132,7 +129,7 @@ class JobPostingServiceTest {
 
         // then
         assertThat(response.getJobPostingId()).isEqualTo(jobPostingId);
-        assertThat(response.getCompanyName()).isEqualTo(name);
+        assertThat(response.getName()).isEqualTo(name);
         assertThat(response.getCountry()).isEqualTo(country);
         assertThat(response.getCity()).isEqualTo(city);
         assertThat(response.getPosition()).isEqualTo(position);
@@ -176,7 +173,7 @@ class JobPostingServiceTest {
 
         // then
         assertThat(response.getJobPostingId()).isEqualTo(jobPostingId);
-        assertThat(response.getCompanyName()).isEqualTo(name);
+        assertThat(response.getName()).isEqualTo(name);
         assertThat(response.getCountry()).isEqualTo(country);
         assertThat(response.getCity()).isEqualTo(city);
         assertThat(response.getPosition()).isEqualTo(patchPosition);
@@ -238,7 +235,7 @@ class JobPostingServiceTest {
 
         //then
         assertThat(response.getJobPostingId()).isEqualTo(jobPostingId);
-        assertThat(response.getCompanyName()).isEqualTo(name);
+        assertThat(response.getName()).isEqualTo(name);
         assertThat(response.getCountry()).isEqualTo(country);
         assertThat(response.getPosition()).isEqualTo(position);
         assertThat(response.getHiringBonus()).isEqualTo(hiringBonus);
