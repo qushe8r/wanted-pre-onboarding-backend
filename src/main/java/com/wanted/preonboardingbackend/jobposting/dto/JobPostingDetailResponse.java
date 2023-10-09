@@ -12,7 +12,7 @@ public class JobPostingDetailResponse {
 
     private Long jobPostingId;
 
-    private String companyName;
+    private String name;
 
     private String country;
 
