@@ -5,15 +5,9 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class JobPostingResponse {
+public class JobPostingPostResponse {
 
     private Long jobPostingId;
-
-    private String name;
-
-    private String country;
-
-    private String city;
 
     private String position;
 

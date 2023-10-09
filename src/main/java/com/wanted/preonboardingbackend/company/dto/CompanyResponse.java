@@ -9,7 +9,7 @@ public class CompanyResponse {
 
     private Long companyId;
 
-    private String companyName;
+    private String name;
 
     private String country;
 
