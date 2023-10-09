@@ -1,25 +1,21 @@
 package com.wanted.preonboardingbackend.company.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class CompanyPost {
 
-    @NotBlank
+    @NotBlank(message = "공백일 수 없습니다.")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "공백일 수 없습니다.")
     private String country;
 
-    @NotBlank
+    @NotBlank(message = "공백일 수 없습니다.")
     private String city;
 
 }

@@ -1,23 +1,25 @@
 package com.wanted.preonboardingbackend.jobposting.dto;
 
-import lombok.AllArgsConstructor;
+import com.wanted.preonboardingbackend.validator.NotSpace;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class JobPostingPatch {
 
-    //TODO: null 허용, "", " " 거부 만들기
+    @NotSpace
     private String position;
 
+    @PositiveOrZero(message = "0 보다 크거나 같아야 합니다.")
     private Long hiringBonus;
 
+    @NotSpace
     private String content;
 
+    @NotSpace
     private String skill;
 
 }
