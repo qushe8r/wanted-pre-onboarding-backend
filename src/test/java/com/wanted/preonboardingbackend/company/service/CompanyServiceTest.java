@@ -45,7 +45,7 @@ class CompanyServiceTest {
 
         // then
         Assertions.assertThat(response.getCompanyId()).isEqualTo(companyId);
-        Assertions.assertThat(response.getCompanyName()).isEqualTo(name);
+        Assertions.assertThat(response.getName()).isEqualTo(name);
         Assertions.assertThat(response.getCountry()).isEqualTo(country);
         Assertions.assertThat(response.getCity()).isEqualTo(city);
     }
