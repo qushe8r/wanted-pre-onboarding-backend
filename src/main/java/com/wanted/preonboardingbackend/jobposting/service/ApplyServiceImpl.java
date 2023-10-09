@@ -1,5 +1,7 @@
 package com.wanted.preonboardingbackend.jobposting.service;
 
+import com.wanted.preonboardingbackend.exception.BusinessLogicException;
+import com.wanted.preonboardingbackend.exception.ExceptionCode;
 import com.wanted.preonboardingbackend.jobposting.dto.ApplyPost;
 import com.wanted.preonboardingbackend.jobposting.dto.ApplyResponse;
 import com.wanted.preonboardingbackend.jobposting.entity.Apply;
@@ -27,7 +29,9 @@ public class ApplyServiceImpl implements ApplyService {
 
     private void verifyExisting(Long jobPostingId, ApplyPost post) {
         applyRepository.findByUser_IdAndJobPosting_Id(post.getUserId(), jobPostingId)
-                .ifPresent(apply -> new RuntimeException());
+                .ifPresent(apply -> {
+                    throw new BusinessLogicException(ExceptionCode.APPLY_ALREADY_EXIST);
+                });
     }
 
 }

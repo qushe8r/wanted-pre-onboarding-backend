@@ -1,5 +1,7 @@
 package com.wanted.preonboardingbackend.jobposting.service;
 
+import com.wanted.preonboardingbackend.exception.BusinessLogicException;
+import com.wanted.preonboardingbackend.exception.ExceptionCode;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingDetailResponse;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPatch;
 import com.wanted.preonboardingbackend.jobposting.dto.JobPostingPost;
@@ -10,6 +12,7 @@ import com.wanted.preonboardingbackend.jobposting.repositroy.JobPostingRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,11 +38,10 @@ public class JobPostingServiceImpl implements JobPostingService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public JobPostingResponse update(Long jobPostingId, JobPostingPatch patch) {
-        JobPosting jobPosting = jobPostingRepository.findById(jobPostingId)
-                .orElseThrow(RuntimeException::new);
-
+        JobPosting jobPosting = findVerifedJobPosting(jobPostingId);
         jobPosting.update(patch.getPosition(), patch.getHiringBonus(), patch.getContent(), patch.getSkill());
         return jobPostingMapper.toResponse(jobPosting);
     }
@@ -54,6 +56,11 @@ public class JobPostingServiceImpl implements JobPostingService {
     public void remove(Long jobPostingId) {
         jobPostingRepository.findById(jobPostingId)
                 .ifPresent(jobPostingRepository::delete);
+    }
+
+    private JobPosting findVerifedJobPosting(Long jobPostingId) {
+        return jobPostingRepository.findById(jobPostingId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.JOB_POSTING_NOT_FOUND));
     }
 
 }
