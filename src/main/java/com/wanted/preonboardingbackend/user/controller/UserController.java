@@ -1,5 +1,6 @@
 package com.wanted.preonboardingbackend.user.controller;
 
+import com.wanted.preonboardingbackend.response.SingleResponse;
 import com.wanted.preonboardingbackend.user.dto.UserResponse;
 import com.wanted.preonboardingbackend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,10 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    ResponseEntity<UserResponse> register() {
+    ResponseEntity<SingleResponse<UserResponse>> register() {
         UserResponse response = userService.save();
         URI uri = URI.create(USER_API_URI + response.getUserId());
-        return ResponseEntity.created(uri).body(response);
+        return ResponseEntity.created(uri).body(new SingleResponse<>(response));
     }
 
 }
