@@ -1,0 +1,192 @@
+= Pre-Onboarding-Backend
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+Sim Hyunbo <Qushe8r@gmail.com>
+
+v1.0.0, 2023.10.09
+
+
+***
+== User
+=== 유저 등록
+* 특별한 요구 사항이 없기 때문에 채용공고 지원에 필요한 ``userId``만을 응답합니다.
+* `201 CREATED` 응답 헤더 ``Location``에 리소스 위치가 있지만 조회할 수 없습니다.
+
+.curl-request
+include::{snippets}/post-users/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-users/http-request.adoc[]
+
+.http-response
+include::{snippets}/post-users/http-response.adoc[]
+
+.response-body
+include::{snippets}/post-users/response-body.adoc[]
+
+.response-fields
+include::{snippets}/post-users/response-fields.adoc[]
+
+== Company
+=== 회사 등록
+- 요구사항 중 채용공고 응답 목록에서 채용공고에 해당하지 않는 내용은 채용공고를 낸 회사의 정보입니다.
+- 요청 본문에 `name`, `country`, ``city``를 필수로 입력해야 합니다.
+
+.curl-request
+include::{snippets}/post-companies/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-companies/http-request.adoc[]
+
+.request-body
+include::{snippets}/post-companies/request-body.adoc[]
+
+.request-fields
+include::{snippets}/post-companies/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-companies/http-response.adoc[]
+
+.response-header
+include::{snippets}/post-companies/response-headers.adoc[]
+
+.response-body
+include::{snippets}/post-companies/response-body.adoc[]
+
+.response-fields
+include::{snippets}/post-companies/response-fields.adoc[]
+
+== JobPosting
+=== 채용공고 등록
+
+.curl-request
+include::{snippets}/post-job-postings/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-job-postings/http-request.adoc[]
+
+.request-body
+include::{snippets}/post-job-postings/request-body.adoc[]
+
+.request-fields
+include::{snippets}/post-job-postings/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-job-postings/http-response.adoc[]
+
+.response-body
+include::{snippets}/post-job-postings/response-body.adoc[]
+
+.response-fields
+include::{snippets}/post-job-postings/response-fields.adoc[]
+
+=== 채용공고 목록 조회
+
+.curl-request
+include::{snippets}/get-job-postings/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-job-postings/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/get-job-postings/request-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-job-postings/http-response.adoc[]
+
+.response-body
+include::{snippets}/get-job-postings/response-body.adoc[]
+
+.response-fields
+include::{snippets}/get-job-postings/response-fields.adoc[]
+
+=== 채용공고 수정
+
+.curl-request
+include::{snippets}/patch-job-postings/curl-request.adoc[]
+
+.http-request
+include::{snippets}/patch-job-postings/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/patch-job-postings/path-parameters.adoc[]
+
+.request-body
+include::{snippets}/patch-job-postings/request-body.adoc[]
+
+.request-fields
+include::{snippets}/patch-job-postings/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patch-job-postings/http-response.adoc[]
+
+.response-body
+include::{snippets}/patch-job-postings/response-body.adoc[]
+
+.response-fields
+include::{snippets}/patch-job-postings/response-fields.adoc[]
+
+=== 채용공고 상세 조회
+
+.curl-request
+include::{snippets}/get-job-postings-detail/curl-request.adoc[]
+
+.http-request
+include::{snippets}/get-job-postings-detail/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/get-job-postings-detail/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/get-job-postings-detail/http-response.adoc[]
+
+.response-body
+include::{snippets}/get-job-postings-detail/response-body.adoc[]
+
+.response-fields
+include::{snippets}/get-job-postings-detail/response-fields.adoc[]
+
+=== 채용공고 삭제
+
+.curl-request
+include::{snippets}/delete-job-postings/curl-request.adoc[]
+
+.http-request
+include::{snippets}/delete-job-postings/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/delete-job-postings/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/delete-job-postings/http-response.adoc[]
+
+== Apply
+=== 채용공고 지원
+
+.curl-request
+include::{snippets}/post-apply/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-apply/http-request.adoc[]
+
+.request-parameters
+include::{snippets}/post-apply/path-parameters.adoc[]
+
+.request-body
+include::{snippets}/post-apply/request-body.adoc[]
+
+.request-fields
+include::{snippets}/post-apply/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-apply/http-response.adoc[]
+
+.response-body
+include::{snippets}/post-apply/response-body.adoc[]
+
+.response-fields
+include::{snippets}/post-apply/response-fields.adoc[]
