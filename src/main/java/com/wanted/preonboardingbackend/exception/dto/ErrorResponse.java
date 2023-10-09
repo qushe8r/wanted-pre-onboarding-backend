@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 @Getter
 public class ErrorResponse {
 
+    private String businessExceptionCode;
+
     private int status;
 
     private String message;
@@ -23,7 +25,8 @@ public class ErrorResponse {
 
     private List<ConstraintViolationError> violationErrors;
 
-    private ErrorResponse(int status, String message) {
+    private ErrorResponse(String businessExceptionCode, int status, String message) {
+        this.businessExceptionCode = businessExceptionCode;
         this.status = status;
         this.message = message;
     }
@@ -43,15 +46,15 @@ public class ErrorResponse {
     }
 
     public static ErrorResponse of(ExceptionCode exceptionCode) {
-        return new ErrorResponse(exceptionCode.getStatus(), exceptionCode.getMessage());
+        return new ErrorResponse(exceptionCode.getBusinessExceptionCode(), exceptionCode.getStatus(), exceptionCode.getMessage());
     }
 
     public static ErrorResponse of(HttpStatus httpStatus) {
-        return new ErrorResponse(httpStatus.value(), httpStatus.getReasonPhrase());
+        return new ErrorResponse(null, httpStatus.value(), httpStatus.getReasonPhrase());
     }
 
     public static ErrorResponse of(HttpStatus httpStatus, String message) {
-        return new ErrorResponse(httpStatus.value(), message);
+        return new ErrorResponse(null, httpStatus.value(), message);
     }
 
     @Getter

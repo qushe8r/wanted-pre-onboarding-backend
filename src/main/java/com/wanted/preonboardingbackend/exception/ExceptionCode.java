@@ -7,8 +7,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ExceptionCode {
 
-    APPLY_ALREADY_EXIST(409, "이미 지원하신 채용공고 입니다."),
-    JOB_POSTING_NOT_FOUND(404, "채용공고를 찾을 수 없습니다.");
+    APPLY_ALREADY_EXIST("A1",409, "이미 지원하신 채용공고 입니다."),
+    JOB_POSTING_NOT_FOUND("J1",404, "채용공고를 찾을 수 없습니다.");
+
+    private final String businessExceptionCode;
 
     private final int status;
 
