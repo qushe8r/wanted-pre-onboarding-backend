@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.operation.preprocess.Preprocessors;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +21,8 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -88,11 +91,11 @@ class JobPostingControllerTest {
                                 fieldWithPath("content").description("채용공고 내용").attributes(constraints("Null 불가 +\n공백 불가")),
                                 fieldWithPath("skill").description("사용기술").attributes(constraints("Null 불가 +\n공백 불가"))
                         ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.LOCATION).description("리소스 위치")
+                        ),
                         responseFields(
                                 fieldWithPath("data.jobPostingId").description("채용공고 식별자"),
-//                                fieldWithPath("data.name").description("회사 이름"),
-//                                fieldWithPath("data.country").description("회사 위치(국가)"),
-//                                fieldWithPath("data.city").description("회사 위치(도시)"),
                                 fieldWithPath("data.position").description("채용포지션"),
                                 fieldWithPath("data.hiringBonus").description("채용보상금"),
                                 fieldWithPath("data.content").description("채용공고 내용"),
@@ -299,6 +302,9 @@ class JobPostingControllerTest {
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
                         pathParameters(
                                 parameterWithName("jobPostingId").description("채용공고 식별자")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.LOCATION).description("리소스 위치")
                         ),
                         requestFields(
                                 fieldWithPath("userId").description("유저 식별자").attributes(constraints("Null 불가 +\n 0 보다 크거나 같음"))

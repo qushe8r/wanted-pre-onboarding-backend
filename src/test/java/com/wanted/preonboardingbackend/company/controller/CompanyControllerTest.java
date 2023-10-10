@@ -76,6 +76,9 @@ class CompanyControllerTest {
                                 fieldWithPath("country").description("회사 위치(국가)").attributes(constraints("Null 불가 +\n 공백 불가")),
                                 fieldWithPath("city").description("회사 위치(도시)").attributes(constraints("Null 불가 +\n 공백 불가"))
                         ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.LOCATION).description("리소스 위치")
+                        ),
                         responseFields(
                                 fieldWithPath("data.companyId").description("회사 식별자"),
                                 fieldWithPath("data.name").description("회사명"),
