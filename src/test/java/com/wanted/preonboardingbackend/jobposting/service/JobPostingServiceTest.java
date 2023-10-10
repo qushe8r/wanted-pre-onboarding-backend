@@ -55,9 +55,6 @@ class JobPostingServiceTest {
 
         // then
         assertThat(response.getJobPostingId()).isEqualTo(jobPostingId);
-//        assertThat(response.getName()).isNull();
-//        assertThat(response.getCountry()).isNull();
-//        assertThat(response.getCity()).isNull();
         assertThat(response.getPosition()).isEqualTo(position);
         assertThat(response.getHiringBonus()).isEqualTo(hiringBonus);
         assertThat(response.getSkill()).isEqualTo(skill);
@@ -162,7 +159,6 @@ class JobPostingServiceTest {
         Long hiringBonus = 3000000L;
         String skill = "Java";
         String content = "원티드랩에서 백엔드 시니어 개발자를 채용합니다. 자격요건은 ...";
-
 
         JobPosting jobPosting = buildJobPosting(jobPostingId, company, position, hiringBonus, skill, content);
 

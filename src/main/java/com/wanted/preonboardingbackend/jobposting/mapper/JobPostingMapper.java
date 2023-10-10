@@ -35,8 +35,12 @@ public class JobPostingMapper {
     }
 
     public JobPostingResponse toResponse(JobPosting jobPosting) {
+        Company company = jobPosting.getCompany();
         return JobPostingResponse.builder()
                 .jobPostingId(jobPosting.getId())
+                .name(company.getName())
+                .country(company.getCountry())
+                .city(company.getCity())
                 .position(jobPosting.getPosition())
                 .hiringBonus(jobPosting.getHiringBonus())
                 .content(jobPosting.getContent())
