@@ -63,7 +63,15 @@ tasks.register('copyDocument', Copy) {
     dependsOn asciidoctor
     println "asciidoctor output: ${asciidoctor.outputDir}"
     from file("${asciidoctor.outputDir}")
-    into file("src/main/resources/static/docs")
+    into file("build/resources/main/static")
+}
+
+jar {
+    dependsOn copyDocument
+}
+
+bootJarMainClassName {
+    dependsOn copyDocument
 }
 
 build {
